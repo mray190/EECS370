@@ -1,0 +1,7 @@
+Test case overview:
+00 - Tests all of the legal opcodes with corresponding varying fields:
+
+01 - Tests for an undefined label (Line 1 has a label 'end' that is not declared)
+02 - Tests for a duplicate label (Line 6 and 3 both have labels 'Start')
+03 - Tests for an overloaded offset (Line 5 contains offset '32780')
+04 - Tests for an unrecognized opcode (Line 4 contains opcode 'beg')
