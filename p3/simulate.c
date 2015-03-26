@@ -218,6 +218,7 @@ void run(stateType state) {
 
 		/* --------------------- IF stage --------------------- */
 		newState.IFID.pcPlus1 = state.pc + 1;
+		newState.IFID.instr = state.instrMem[state.pc];
 		int pc = 1;
 
 		if (opcode(state.IFID.instr)==LW) {
@@ -233,14 +234,11 @@ void run(stateType state) {
 				}
 			}
 		}
-
+		newState.pc = state.pc + pc;
 		if (opcode(state.EXMEM.instr)==BEQ) {
-
-		} else {
-			newState.IFID.instr = state.instrMem[state.pc];
-			newState.pc = state.pc + pc;
+			newState.IFID.instr = state.instrMem[state.EXMEM.branchTarget];
+			newState.pc = state.EXMEM.branchTarget + 1;
 		}
-
 
 		/* --------------------- ID stage --------------------- */
 		newState.IDEX.instr = state.IFID.instr;
@@ -257,17 +255,23 @@ void run(stateType state) {
 
 		int regA = state.IDEX.readRegA;
 		int regB = state.IDEX.readRegB;
+		if (opcode(state.WBEND.instr)==LW) {
+			if (field0(state.IDEX.instr)==field1(state.WBEND.instr))
+				regA = state.WBEND.writeData;
+			if (field1(state.IDEX.instr)==field1(state.WBEND.instr))
+				regB = state.WBEND.writeData;
+		}
 		if (opcode(state.MEMWB.instr)==LW) {
 			if (field0(state.IDEX.instr)==field1(state.MEMWB.instr))
 				regA = state.MEMWB.writeData;
 			if (field1(state.IDEX.instr)==field1(state.MEMWB.instr))
 				regB = state.MEMWB.writeData;
 		}
-		if (opcode(state.WBEND.instr)==LW) {
-			if (field0(state.IDEX.instr)==field1(state.WBEND.instr))
-				regA = state.WBEND.writeData;
-			if (field1(state.IDEX.instr)==field1(state.WBEND.instr))
-				regB = state.WBEND.writeData;
+		if (opcode(state.MEMWB.instr)==ADD || opcode(state.MEMWB.instr)==NAND) {
+			if (field0(state.IDEX.instr)==field2(state.MEMWB.instr))
+				regA = state.MEMWB.writeData;
+			if (field1(state.IDEX.instr)==field2(state.MEMWB.instr))
+				regB = state.MEMWB.writeData;
 		}
 		if (opcode(state.EXMEM.instr)==ADD || opcode(state.EXMEM.instr)==NAND) {
 			if (field0(state.IDEX.instr)==field2(state.EXMEM.instr))
@@ -283,7 +287,12 @@ void run(stateType state) {
 		else if (opcode(state.IDEX.instr)==NAND)
 			newState.EXMEM.aluResult = ~(regA & regB);
 		else if (opcode(state.IDEX.instr)==BEQ) {
-
+			if ((regB-regA)==0) {
+				newState.EXMEM.branchTarget = state.IDEX.pcPlus1 + state.IDEX.offset;
+				newState.IDEX.instr = NOOPINSTRUCTION;
+				newState.IFID.instr = NOOPINSTRUCTION;
+			} else
+				newState.EXMEM.branchTarget = state.pc + 1;
 		} else if (opcode(state.IDEX.instr)!=NOOP)
 			newState.EXMEM.aluResult = regA + state.IDEX.offset;
 
