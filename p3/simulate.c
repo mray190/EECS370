@@ -219,22 +219,7 @@ void run(stateType state) {
 		/* --------------------- IF stage --------------------- */
 		newState.IFID.pcPlus1 = state.pc + 1;
 		newState.IFID.instr = state.instrMem[state.pc];
-		int pc = 1;
-
-		if (opcode(state.IFID.instr)==LW) {
-			if (opcode(state.instrMem[state.pc])==LW) {
-				if (field1(state.IFID.instr)==field0(state.instrMem[state.pc])) {
-					newState.IFID.instr = NOOPINSTRUCTION;
-					pc = 0;
-				}
-			} else if (opcode(state.instrMem[state.pc])!=NOOP) {
-				if (field1(state.IFID.instr)==field0(state.instrMem[state.pc]) || field1(state.IFID.instr)==field1(state.instrMem[state.pc])) {
-					newState.IFID.instr = NOOPINSTRUCTION;
-					pc = 0;
-				}
-			}
-		}
-		newState.pc = state.pc + pc;
+		newState.pc = state.pc + 1;
 		if (opcode(state.EXMEM.instr)==BEQ) {
 			newState.IFID.instr = state.instrMem[state.EXMEM.branchTarget];
 			newState.pc = state.EXMEM.branchTarget + 1;
@@ -243,6 +228,19 @@ void run(stateType state) {
 		/* --------------------- ID stage --------------------- */
 		newState.IDEX.instr = state.IFID.instr;
 		newState.IDEX.pcPlus1 = state.IFID.pcPlus1;
+		if (opcode(state.IDEX.instr)==LW) {
+			if (opcode(state.IFID.instr)==LW) {
+				if (field1(state.IDEX.instr)==field0(state.IFID.instr)) {
+					newState.IDEX.instr = NOOPINSTRUCTION;
+					newState.pc = state.pc - 1;
+				}
+			} else if (opcode(state.IFID.instr)!=NOOP) {
+				if (field1(state.IDEX.instr)==field0(state.IFID.instr) || field1(state.IDEX.instr)==field1(state.IFID.instr)) {
+					newState.IDEX.instr = NOOPINSTRUCTION;
+					newState.pc = state.pc - 1;
+				}
+			}
+		}
 		if (opcode(state.IFID.instr)!=NOOP) {
 			newState.IDEX.readRegA = state.reg[field0(state.IFID.instr)];
 			newState.IDEX.readRegB = state.reg[field1(state.IFID.instr)];
@@ -266,6 +264,18 @@ void run(stateType state) {
 				regA = state.MEMWB.writeData;
 			if (field1(state.IDEX.instr)==field1(state.MEMWB.instr))
 				regB = state.MEMWB.writeData;
+		}
+		if (opcode(state.EXMEM.instr)==LW) {
+			if (field0(state.IDEX.instr)==field1(state.EXMEM.instr))
+				regA = state.EXMEM.aluResult;
+			if (field1(state.IDEX.instr)==field1(state.EXMEM.instr))
+				regB = state.EXMEM.aluResult;
+		}
+		if (opcode(state.WBEND.instr)==ADD || opcode(state.WBEND.instr)==NAND) {
+			if (field0(state.IDEX.instr)==field2(state.WBEND.instr))
+				regA = state.WBEND.writeData;
+			if (field1(state.IDEX.instr)==field2(state.WBEND.instr))
+				regB = state.WBEND.writeData;
 		}
 		if (opcode(state.MEMWB.instr)==ADD || opcode(state.MEMWB.instr)==NAND) {
 			if (field0(state.IDEX.instr)==field2(state.MEMWB.instr))
@@ -303,14 +313,14 @@ void run(stateType state) {
 			newState.dataMem[state.EXMEM.aluResult] = state.EXMEM.readRegB;
 		if (opcode(state.EXMEM.instr)==LW)
 			newState.MEMWB.writeData = state.dataMem[state.EXMEM.aluResult];
-		else if (opcode(state.EXMEM.instr)==ADD || opcode(state.EXMEM.instr)==NAND)
-			newState.reg[field2(state.EXMEM.instr)] = state.EXMEM.aluResult;
 
 		/* --------------------- WB stage --------------------- */
 		newState.WBEND.instr = state.MEMWB.instr;
 		newState.WBEND.writeData = state.MEMWB.writeData;
 		if (opcode(state.MEMWB.instr)==LW)
 			newState.reg[field1(state.MEMWB.instr)] = state.MEMWB.writeData;
+		else if (opcode(state.MEMWB.instr)==ADD || opcode(state.MEMWB.instr)==NAND)
+			newState.reg[field2(state.MEMWB.instr)] = state.MEMWB.writeData;
 
 		state = newState;
 	}	
