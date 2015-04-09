@@ -31,21 +31,21 @@ state before cycle 0 starts
 		pcPlus1 32767
 	IDEX:
 		instruction noop 0 0 0
-		pcPlus1 32629
+		pcPlus1 32685
 		readRegA 32660418
 		readRegB 0
-		offset 965672624
+		offset 630239088
 	EXMEM:
 		instruction noop 0 0 0
-		branchTarget -111523439
-		aluResult 32629
+		branchTarget 1138571665
+		aluResult 32685
 		readRegB 0
 	MEMWB:
 		instruction noop 0 0 0
-		writeData -109331112
+		writeData 1140763992
 	WBEND:
 		instruction noop 0 0 0
-		writeData -109333312
+		writeData 1140761792
 
 @@@
 state before cycle 1 starts
@@ -82,18 +82,18 @@ state before cycle 1 starts
 		pcPlus1 32767
 		readRegA 32660418
 		readRegB 0
-		offset 965672624
+		offset 630239088
 	EXMEM:
 		instruction noop 0 0 0
-		branchTarget -111523439
-		aluResult 32629
+		branchTarget 1138571665
+		aluResult 32685
 		readRegB 0
 	MEMWB:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 	WBEND:
 		instruction noop 0 0 0
-		writeData -109331112
+		writeData 1140763992
 
 @@@
 state before cycle 2 starts
@@ -133,19 +133,19 @@ state before cycle 2 starts
 		offset 12
 	EXMEM:
 		instruction noop 0 0 0
-		branchTarget -111523439
-		aluResult 32629
+		branchTarget 1138571665
+		aluResult 32685
 		readRegB 0
 	MEMWB:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 	WBEND:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 
 @@@
 state before cycle 3 starts
-	pc 2
+	pc 3
 	data memory:
 		dataMem[ 0 ] 8454156
 		dataMem[ 1 ] 8519693
@@ -171,7 +171,7 @@ state before cycle 3 starts
 		reg[ 6 ] 0
 		reg[ 7 ] 0
 	IFID:
-		instruction noop 0 0 0
+		instruction add 1 2 3
 		pcPlus1 3
 	IDEX:
 		instruction lw 0 2 13
@@ -181,15 +181,15 @@ state before cycle 3 starts
 		offset 13
 	EXMEM:
 		instruction lw 0 1 12
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 12
 		readRegB 0
 	MEMWB:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 	WBEND:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 
 @@@
 state before cycle 4 starts
@@ -220,7 +220,7 @@ state before cycle 4 starts
 		reg[ 7 ] 0
 	IFID:
 		instruction add 1 2 3
-		pcPlus1 3
+		pcPlus1 4
 	IDEX:
 		instruction noop 0 0 0
 		pcPlus1 3
@@ -229,7 +229,7 @@ state before cycle 4 starts
 		offset 13
 	EXMEM:
 		instruction lw 0 2 13
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 13
 		readRegB 0
 	MEMWB:
@@ -237,7 +237,7 @@ state before cycle 4 starts
 		writeData 12
 	WBEND:
 		instruction noop 0 0 0
-		writeData 32629
+		writeData 32685
 
 @@@
 state before cycle 5 starts
@@ -271,13 +271,13 @@ state before cycle 5 starts
 		pcPlus1 4
 	IDEX:
 		instruction add 1 2 3
-		pcPlus1 3
+		pcPlus1 4
 		readRegA 0
 		readRegB 0
 		offset 13
 	EXMEM:
 		instruction noop 0 0 0
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 13
 		readRegB 0
 	MEMWB:
@@ -325,7 +325,7 @@ state before cycle 6 starts
 		offset 13
 	EXMEM:
 		instruction add 1 2 3
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 22
 		readRegB 10
 	MEMWB:
@@ -373,7 +373,7 @@ state before cycle 7 starts
 		offset 13
 	EXMEM:
 		instruction nand 1 2 4
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult -9
 		readRegB 10
 	MEMWB:
@@ -421,7 +421,7 @@ state before cycle 8 starts
 		offset 0
 	EXMEM:
 		instruction add 4 1 5
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 3
 		readRegB 12
 	MEMWB:
@@ -469,7 +469,7 @@ state before cycle 9 starts
 		offset 1
 	EXMEM:
 		instruction sw 0 5 0
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 0
 		readRegB 3
 	MEMWB:
@@ -517,7 +517,7 @@ state before cycle 10 starts
 		offset 2
 	EXMEM:
 		instruction sw 0 5 1
-		branchTarget -111523439
+		branchTarget 1138571665
 		aluResult 1
 		readRegB 3
 	MEMWB:
@@ -566,7 +566,7 @@ state before cycle 11 starts
 	EXMEM:
 		instruction beq 2 1 2
 		branchTarget 10
-		aluResult 1
+		aluResult 2
 		readRegB 12
 	MEMWB:
 		instruction sw 0 5 1
@@ -614,11 +614,11 @@ state before cycle 12 starts
 	EXMEM:
 		instruction noop 0 0 0
 		branchTarget 10
-		aluResult 1
+		aluResult 2
 		readRegB 12
 	MEMWB:
 		instruction beq 2 1 2
-		writeData 1
+		writeData 2
 	WBEND:
 		instruction sw 0 5 1
 		writeData 1
@@ -662,14 +662,14 @@ state before cycle 13 starts
 	EXMEM:
 		instruction noop 0 0 0
 		branchTarget 10
-		aluResult 1
+		aluResult 2
 		readRegB 12
 	MEMWB:
 		instruction noop 0 0 0
-		writeData 1
+		writeData 2
 	WBEND:
 		instruction beq 2 1 2
-		writeData 1
+		writeData 2
 
 @@@
 state before cycle 14 starts
@@ -714,10 +714,10 @@ state before cycle 14 starts
 		readRegB 12
 	MEMWB:
 		instruction noop 0 0 0
-		writeData 1
+		writeData 2
 	WBEND:
 		instruction noop 0 0 0
-		writeData 1
+		writeData 2
 
 @@@
 state before cycle 15 starts
@@ -765,7 +765,7 @@ state before cycle 15 starts
 		writeData 15
 	WBEND:
 		instruction noop 0 0 0
-		writeData 1
+		writeData 2
 
 @@@
 state before cycle 16 starts
