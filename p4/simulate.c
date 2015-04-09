@@ -56,7 +56,7 @@ void printAction(int, int, enum actionType);
 
 void adjustLRU(cacheType *, int, int);
 int load(cacheType *, int, stateType *);
-void store(cacheType *, int, int);
+void store(cacheType *, int, int, stateType *);
 
 void printState(stateType *statePtr) {
     int i;
@@ -132,10 +132,79 @@ void adjustLRU(cacheType *cache, int set, int i) {
 	for (j=0; j<cache->blockSize; j++) cache->sets[set].LRUbits[j]++;
 }
 
-/* Properly simulates the cache for a load from
+/**
+ * Properly simulates the cache for a load from
  * memory address “addr”. Returns the loaded value.
  */
 int load(cacheType *cache, int addr, stateType *state) {
+	int set = (addr % (cache->blockSize * cache->numSets)) / cache->blockSize;
+	int tag = addr / (cache->blockSize * cache->numSets);
+	int block = ((int)(addr/cache->blockSize))*cache->blockSize;
+	int offset = addr % cache->blockSize;
+
+	/*
+	printf("DEBUG - set: %d tag: %d block: %d offset: %d\n", set, tag, block, offset);
+	*/
+
+	int i;
+	for (i=0; i < cache->blocksPerSet; i++) {
+
+		/* Hit */
+		if (cache->sets[set].valid[i]==1 && cache->sets[set].tag[i]==tag) {
+			adjustLRU(cache, set, i);
+			printAction(addr, 1, cacheToProcessor);
+			return cache->sets[set].data[i*cache->blockSize + offset];
+
+		/* Compulsory miss */
+		} else if (cache->sets[set].valid[i]==0) {
+			cache->sets[set].valid[i] = 1;
+			cache->sets[set].tag[i] = tag;
+			int j;
+			for (j=0; j < cache->blockSize; j++)
+				cache->sets[set].data[i*cache->blockSize + j] = state->mem[block + j];
+			adjustLRU(cache, set, i);
+			printAction(block, cache->blockSize, memoryToCache);
+			printAction(addr, 1, cacheToProcessor);
+			return cache->sets[set].data[i*cache->blockSize + offset];
+		}
+	}
+
+	/* Determine LRU */
+	int max = cache->sets[set].LRUbits[0];
+	cache->sets[set].LRU = 0;
+	for (i=0; i < cache->blocksPerSet; i++) {
+		if (max < cache->sets[set].LRUbits[i]) {
+			max = cache->sets[set].LRUbits[i];
+			cache->sets[set].LRU = i;
+		}
+	}
+
+	/* Write back */
+	if (cache->sets[set].dirty[cache->sets[set].LRU]==1) {
+		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToMemory);
+		for (i=0; i < cache->blockSize; i++)
+			state->mem[block+i] = cache->sets[set].data[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i];
+		cache->sets[set].dirty[cache->sets[set].LRU] = 0;
+	} else {
+		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToNowhere);
+	}
+
+	/* Conflict miss */
+	cache->sets[set].valid[cache->sets[set].LRU] = 1;
+	cache->sets[set].tag[cache->sets[set].LRU] = tag;
+	for (i=0; i < cache->blockSize; i++)
+		cache->sets[set].data[cache->sets[set].LRU*cache->blockSize + i] = state->mem[block + i];
+	adjustLRU(cache, set, cache->sets[set].LRU);
+	printAction(block, cache->blockSize, memoryToCache);
+	printAction(addr, 1, cacheToProcessor);
+	return cache->sets[set].data[cache->sets[set].LRU*cache->blockSize + offset];
+}
+
+/**
+ * Properly simulates the cache for a store 
+ * to memory address “addr”. Returns nothing.
+ */
+void store(cacheType *cache, int addr, int data, stateType *state) {
 	int set = (addr % (cache->blockSize * cache->numSets)) / cache->blockSize;
 	int tag = addr / (cache->blockSize * cache->numSets);
 	int block = ((int)(addr/cache->blockSize))*cache->blockSize;
@@ -146,25 +215,31 @@ int load(cacheType *cache, int addr, stateType *state) {
 
 		/* Hit */
 		if (cache->sets[set].valid[i]==1 && cache->sets[set].tag[i]==tag) {
+			cache->sets[set].dirty[i] = 1;
+			cache->sets[set].data[i*cache->blockSize + offset] = data;
 			adjustLRU(cache, set, i);
-			printAction(addr, 1, cacheToProcessor);
-			return cache->sets[set].data[i*cache->blockSize+tag];
+			printAction(addr, 1, processorToCache);
+			return;
 
 		/* Compulsory miss */
 		} else if (cache->sets[set].valid[i]==0) {
 			cache->sets[set].valid[i] = 1;
+			cache->sets[set].dirty[i] = 1;
 			cache->sets[set].tag[i] = tag;
-			for (i=0; i < cache->blockSize; i++)
-				cache->sets[set].data[i*cache->blockSize + i] = state->mem[block + i];
+			int j;
+			for (j=0; j < cache->blockSize; j++)
+				cache->sets[set].data[i*cache->blockSize + j] = state->mem[block + j];
+			cache->sets[set].data[i*cache->blockSize + offset] = data;
 			adjustLRU(cache, set, i);
 			printAction(block, cache->blockSize, memoryToCache);
-			printAction(addr, 1, cacheToProcessor);
-			return cache->sets[set].data[i*cache->blockSize + offset];
+			printAction(addr, 1, processorToCache);
+			return;
 		}
 	}
 
-	/* Conflict miss - Determine LRU */
+	/* Determine LRU */
 	int max = cache->sets[set].LRUbits[0];
+	cache->sets[set].LRU = 0;
 	for (i=0; i < cache->blocksPerSet; i++) {
 		if (max<cache->sets[set].LRUbits[i]) {
 			max = cache->sets[set].LRUbits[i];
@@ -172,20 +247,29 @@ int load(cacheType *cache, int addr, stateType *state) {
 		}
 	}
 
-	/* Conflict miss - replace cache contents */
-	if (cache->sets[set].dirty[cache->sets[set].LRU]==0) {
+	printf("DEBUG - store LRU: %d\n",cache->sets[set].LRU);
 
-	/* Conflict miss - Write-back */
+	/* Write back */
+	if (cache->sets[set].dirty[cache->sets[set].LRU]==1) {
+		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToMemory);
+		for (i=0; i < cache->blockSize; i++)
+			state->mem[block+i] = cache->sets[set].data[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i];
+		cache->sets[set].dirty[cache->sets[set].LRU] = 0;
 	} else {
-
+		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToNowhere);
 	}
-}
 
-/* Properly simulates the cache for a store 
- * to memory address “addr”. Returns nothing.
- */
-void store(cacheType *cache, int addr, int data) {
-
+	/* Conflict miss */
+	cache->sets[set].valid[cache->sets[set].LRU] = 1;
+	cache->sets[set].tag[cache->sets[set].LRU] = tag;
+	cache->sets[set].dirty[cache->sets[set].LRU] = 1;
+	for (i=0; i < cache->blockSize; i++)
+		cache->sets[set].data[cache->sets[set].LRU*cache->blockSize + i] = state->mem[block + i];
+	cache->sets[set].data[cache->sets[set].LRU*cache->blockSize + offset] = data;
+	adjustLRU(cache, set, cache->sets[set].LRU);
+	printAction(block, cache->blockSize, memoryToCache);
+	printAction(addr, 1, processorToCache);
+	return;
 }
 
 int main(int argc, char *argv[]) {
@@ -239,27 +323,7 @@ int main(int argc, char *argv[]) {
 		    printf("error in reading address %d\n", state.numMemory);
 		    exit(1);
 		}
-		printf("memory[%d]=%d\n", state.numMemory, state.mem[state.numMemory]);
     }
-
-    printf("\n");
-
-    /*///////////////////
-    // TEST
-    ////////////////////*/
-
-    load(&cache, 3, &state);
-    load(&cache, 6, &state);
-    load(&cache, 9, &state);
-    load(&cache, 10, &state);
-    load(&cache, 14, &state);
-    load(&cache, 16, &state)
-
-
-    exit(0);
-    /*///////////////////
-    // END
-    ////////////////////*/
     
     /* run never returns */
     run(cache, state);
@@ -274,7 +338,6 @@ void run(cacheType cache, stateType state) {
     int maxMem=-1;	/* highest memory address touched during run */
 
     for (; 1; instructions++) { /* infinite loop, exits when it executes halt */
-		/* printState(&state); */
 
 		if (state.pc < 0 || state.pc >= NUMMEMORY) {
 		    printf("pc went out of the memory range\n");
@@ -283,11 +346,13 @@ void run(cacheType cache, stateType state) {
 
 		maxMem = (state.pc > maxMem)?state.pc:maxMem;
 
+		int instruction = load(&cache, state.pc, &state);
+
 		/* this is to make the following code easier to read */
-		opcode = state.mem[state.pc] >> 22;
-		arg0 = (state.mem[state.pc] >> 19) & 0x7;
-		arg1 = (state.mem[state.pc] >> 16) & 0x7;
-		arg2 = state.mem[state.pc] & 0x7; /* only for add, nand */
+		opcode = instruction >> 22;
+		arg0 = (instruction >> 19) & 0x7;
+		arg1 = (instruction >> 16) & 0x7;
+		arg2 = instruction & 0x7; /* only for add, nand */
 
 		addressField = convertNum(state.mem[state.pc] & 0xFFFF); /* for beq, lw, sw */
 		state.pc++;
@@ -304,7 +369,6 @@ void run(cacheType cache, stateType state) {
 				exit(1);
 		    }
 		    state.reg[arg1] = load(&cache, state.reg[arg0] + addressField, &state);
-		    /* state.reg[arg1] = state.mem[state.reg[arg0] + addressField]; */
 		    if (state.reg[arg0] + addressField > maxMem)
 				maxMem = state.reg[arg0] + addressField;
 
@@ -313,8 +377,7 @@ void run(cacheType cache, stateType state) {
 				printf("address out of bounds\n");
 				exit(1);
 		    }
-		    store(&cache, state.reg[arg0] + addressField, state.reg[arg1]);
-		    /* state.mem[state.reg[arg0] + addressField] = state.reg[arg1]; */
+		    store(&cache, state.reg[arg0] + addressField, state.reg[arg1], &state);
 		    if (state.reg[arg0] + addressField > maxMem)
 				maxMem = state.reg[arg0] + addressField;
 
@@ -332,10 +395,6 @@ void run(cacheType cache, stateType state) {
 		} else if (opcode == NOOP) {
 
 		} else if (opcode == HALT) {
-		    printf("machine halted\n");
-		    printf("total of %d instructions executed\n", instructions+1);
-		    printf("final state of machine:\n");
-		    printState(&state);
 		    exit(0);
 
 		} else {
