@@ -1,0 +1,261 @@
+Set: 0
+0
+1
+1
+1
+
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [0-0] from the cache to the processor
+Set: 0
+0
+2
+2
+2
+
+@@@ transferring word [2-2] from the cache to the processor
+Set: 0
+0
+3
+3
+3
+
+@@@ transferring word [1-1] from the cache to the processor
+Set: 1
+0
+1
+1
+1
+
+@@@ transferring word [4-7] from the memory to the cache
+@@@ transferring word [5-5] from the cache to the processor
+Set: 0
+0
+4
+4
+4
+
+@@@ transferring word [2-2] from the cache to the processor
+Set: 0
+1
+0
+5
+5
+
+@@@ transferring word [8-11] from the memory to the cache
+@@@ transferring word [9-9] from the cache to the processor
+Set: 0
+0
+1
+6
+6
+
+@@@ transferring word [3-3] from the cache to the processor
+Set: 1
+1
+0
+2
+2
+
+@@@ transferring word [12-15] from the memory to the cache
+@@@ transferring word [13-13] from the cache to the processor
+Set: 1
+0
+1
+3
+3
+
+@@@ transferring word [4-4] from the cache to the processor
+Set: 0
+0
+2
+7
+7
+
+@@@ transferring word [3-3] from the cache to the processor
+Set: 1
+0
+2
+4
+4
+
+@@@ transferring word [5-5] from the cache to the processor
+Set: 1
+0
+3
+5
+5
+
+@@@ transferring word [6-6] from the cache to the processor
+Set: 1
+0
+4
+6
+6
+
+@@@ transferring word [6-6] from the cache to the processor
+@@@ transferring word [8-11] from the cache to nowhere
+Set: 0
+1
+0
+8
+8
+
+@@@ transferring word [16-19] from the memory to the cache
+@@@ transferring word [17-17] from the cache to the processor
+Set: 1
+0
+5
+7
+7
+
+@@@ transferring word [7-7] from the cache to the processor
+@@@ transferring word [0-3] from the cache to nowhere
+Set: 0
+0
+1
+9
+9
+
+@@@ transferring word [8-11] from the memory to the cache
+@@@ transferring word [10-10] from the cache to the processor
+Set: 0
+0
+2
+10
+10
+
+@@@ transferring word [8-8] from the cache to the processor
+@@@ transferring word [16-19] from the cache to nowhere
+Set: 0
+1
+0
+11
+11
+
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [1-1] from the cache to the processor
+Set: 0
+0
+1
+12
+12
+
+@@@ transferring word [9-9] from the cache to the processor
+Set: 0
+1
+0
+13
+13
+
+@@@ transferring word [3-3] from the processor to the cache
+Set: 0
+0
+1
+14
+14
+
+@@@ transferring word [10-10] from the cache to the processor
+Set: 0
+1
+0
+15
+15
+
+@@@ transferring word [2-2] from the processor to the cache
+Set: 0
+0
+1
+16
+16
+
+@@@ transferring word [11-11] from the cache to the processor
+Set: 1
+1
+0
+8
+8
+
+@@@ transferring word [13-13] from the cache to the processor
+Set: 1
+2
+0
+9
+9
+
+@@@ transferring word [12-12] from the cache to the processor
+Set: 1
+0
+1
+10
+10
+
+@@@ transferring word [7-7] from the cache to the processor
+Set: 1
+1
+0
+11
+11
+
+@@@ transferring word [13-13] from the cache to the processor
+@@@ transferring word [4-7] from the cache to nowhere
+Set: 1
+0
+1
+12
+12
+
+@@@ transferring word [20-23] from the memory to the cache
+@@@ transferring word [22-22] from the cache to the processor
+Set: 1
+1
+0
+13
+13
+
+@@@ transferring word [14-14] from the cache to the processor
+Set: 0
+1
+0
+17
+17
+
+@@@ transferring word [0-0] from the cache to the processor
+Set: 1
+2
+0
+14
+14
+
+@@@ transferring word [15-15] from the cache to the processor
+@@@ transferring word [20-23] from the cache to nowhere
+Set: 1
+0
+1
+15
+15
+
+@@@ transferring word [44-47] from the memory to the cache
+@@@ transferring word [45-45] from the processor to the cache
+@@@ transferring word [8-11] from the cache to nowhere
+Set: 0
+0
+1
+18
+18
+
+@@@ transferring word [16-19] from the memory to the cache
+@@@ transferring word [16-16] from the cache to the processor
+Set: 0
+1
+0
+19
+19
+
+@@@ transferring word [0-0] from the processor to the cache
+Set: 0
+0
+1
+20
+20
+
+@@@ transferring word [17-17] from the cache to the processor

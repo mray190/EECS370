@@ -1,0 +1,178 @@
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [0-0] from the cache to the processor
+DEBUG: 8454149
+@@@ transferring word [4-7] from the memory to the cache
+@@@ transferring word [5-5] from the cache to the processor
+@@@ transferring word [1-1] from the cache to the processor
+DEBUG: 8454150
+@@@ transferring word [6-6] from the cache to the processor
+@@@ transferring word [2-2] from the cache to the processor
+DEBUG: 12648474
+@@@ transferring word [24-27] from the memory to the cache
+@@@ transferring word [26-26] from the processor to the cache
+@@@ transferring word [3-3] from the cache to the processor
+DEBUG: 8454177
+@@@ transferring word [24-27] from the cache to the memory
+@@@ transferring word [32-35] from the memory to the cache
+@@@ transferring word [33-33] from the cache to the processor
+@@@ transferring word [4-4] from the cache to the processor
+DEBUG: 12648504
+@@@ transferring word [0-3] from the cache to nowhere
+@@@ transferring word [56-59] from the memory to the cache
+@@@ transferring word [56-56] from the processor to the cache
+@@@ transferring word [5-5] from the cache to the processor
+DEBUG: 8454209
+@@@ transferring word [32-35] from the cache to nowhere
+@@@ transferring word [64-67] from the memory to the cache
+@@@ transferring word [65-65] from the cache to the processor
+@@@ transferring word [6-6] from the cache to the processor
+DEBUG: 12648571
+@@@ transferring word [56-59] from the cache to the memory
+@@@ transferring word [120-123] from the memory to the cache
+@@@ transferring word [123-123] from the processor to the cache
+@@@ transferring word [7-7] from the cache to the processor
+DEBUG: 8454157
+@@@ transferring word [12-15] from the memory to the cache
+@@@ transferring word [13-13] from the cache to the processor
+@@@ transferring word [64-67] from the cache to nowhere
+@@@ transferring word [8-11] from the memory to the cache
+@@@ transferring word [8-8] from the cache to the processor
+DEBUG: 8454220
+@@@ transferring word [4-7] from the cache to nowhere
+@@@ transferring word [76-79] from the memory to the cache
+@@@ transferring word [76-76] from the cache to the processor
+@@@ transferring word [9-9] from the cache to the processor
+DEBUG: 12648493
+@@@ transferring word [12-15] from the cache to nowhere
+@@@ transferring word [44-47] from the memory to the cache
+@@@ transferring word [45-45] from the processor to the cache
+@@@ transferring word [10-10] from the cache to the processor
+DEBUG: 8454189
+@@@ transferring word [45-45] from the cache to the processor
+@@@ transferring word [11-11] from the cache to the processor
+DEBUG: 8454150
+@@@ transferring word [76-79] from the cache to nowhere
+@@@ transferring word [4-7] from the memory to the cache
+@@@ transferring word [6-6] from the cache to the processor
+@@@ transferring word [44-47] from the cache to the memory
+@@@ transferring word [12-15] from the memory to the cache
+@@@ transferring word [12-12] from the cache to the processor
+DEBUG: 12648472
+@@@ transferring word [120-123] from the cache to the memory
+@@@ transferring word [24-27] from the memory to the cache
+@@@ transferring word [24-24] from the processor to the cache
+@@@ transferring word [13-13] from the cache to the processor
+DEBUG: 8454161
+@@@ transferring word [8-11] from the cache to nowhere
+@@@ transferring word [16-19] from the memory to the cache
+@@@ transferring word [17-17] from the cache to the processor
+@@@ transferring word [14-14] from the cache to the processor
+DEBUG: 12648448
+@@@ transferring word [24-27] from the cache to the memory
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [0-0] from the processor to the cache
+@@@ transferring word [15-15] from the cache to the processor
+DEBUG: 12648537
+@@@ transferring word [16-19] from the cache to nowhere
+@@@ transferring word [88-91] from the memory to the cache
+@@@ transferring word [89-89] from the processor to the cache
+@@@ transferring word [0-3] from the cache to the memory
+@@@ transferring word [16-19] from the memory to the cache
+@@@ transferring word [16-16] from the cache to the processor
+DEBUG: 8454154
+@@@ transferring word [88-91] from the cache to the memory
+@@@ transferring word [8-11] from the memory to the cache
+@@@ transferring word [10-10] from the cache to the processor
+@@@ transferring word [17-17] from the cache to the processor
+DEBUG: 8454145
+@@@ transferring word [8-11] from the cache to nowhere
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [1-1] from the cache to the processor
+@@@ transferring word [18-18] from the cache to the processor
+DEBUG: 12648505
+@@@ transferring word [0-3] from the cache to nowhere
+@@@ transferring word [56-59] from the memory to the cache
+@@@ transferring word [57-57] from the processor to the cache
+@@@ transferring word [19-19] from the cache to the processor
+DEBUG: 8454276
+@@@ transferring word [4-7] from the cache to nowhere
+@@@ transferring word [132-135] from the memory to the cache
+@@@ transferring word [132-132] from the cache to the processor
+@@@ transferring word [12-15] from the cache to nowhere
+@@@ transferring word [20-23] from the memory to the cache
+@@@ transferring word [20-20] from the cache to the processor
+DEBUG: 12648451
+@@@ transferring word [56-59] from the cache to the memory
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [3-3] from the processor to the cache
+@@@ transferring word [21-21] from the cache to the processor
+DEBUG: 12648483
+@@@ transferring word [16-19] from the cache to nowhere
+@@@ transferring word [32-35] from the memory to the cache
+@@@ transferring word [35-35] from the processor to the cache
+@@@ transferring word [22-22] from the cache to the processor
+DEBUG: 8454157
+@@@ transferring word [132-135] from the cache to nowhere
+@@@ transferring word [12-15] from the memory to the cache
+@@@ transferring word [13-13] from the cache to the processor
+@@@ transferring word [23-23] from the cache to the processor
+DEBUG: 12648448
+@@@ transferring word [0-0] from the processor to the cache
+@@@ transferring word [32-35] from the cache to the memory
+@@@ transferring word [24-27] from the memory to the cache
+@@@ transferring word [24-24] from the cache to the processor
+DEBUG: 12648571
+@@@ transferring word [0-3] from the cache to the memory
+@@@ transferring word [120-123] from the memory to the cache
+@@@ transferring word [123-123] from the processor to the cache
+@@@ transferring word [25-25] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [26-26] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [27-27] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [12-15] from the cache to nowhere
+@@@ transferring word [28-31] from the memory to the cache
+@@@ transferring word [28-28] from the cache to the processor
+DEBUG: 12648493
+@@@ transferring word [20-23] from the cache to nowhere
+@@@ transferring word [44-47] from the memory to the cache
+@@@ transferring word [45-45] from the processor to the cache
+@@@ transferring word [29-29] from the cache to the processor
+DEBUG: 8454145
+@@@ transferring word [120-123] from the cache to the memory
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [1-1] from the cache to the processor
+@@@ transferring word [30-30] from the cache to the processor
+DEBUG: 12648533
+@@@ transferring word [44-47] from the cache to the memory
+@@@ transferring word [84-87] from the memory to the cache
+@@@ transferring word [85-85] from the processor to the cache
+@@@ transferring word [31-31] from the cache to the processor
+DEBUG: 12648448
+Setting 4 with 0
+@@@ transferring word [0-0] from the processor to the cache
+@@@ transferring word [24-27] from the cache to nowhere
+@@@ transferring word [32-35] from the memory to the cache
+@@@ transferring word [32-32] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [33-33] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [34-34] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [35-35] from the cache to the processor
+DEBUG: 0
+@@@ transferring word [84-87] from the cache to the memory
+@@@ transferring word [36-39] from the memory to the cache
+@@@ transferring word [36-36] from the cache to the processor
+DEBUG: 8454243
+@@@ transferring word [0-3] from the cache to the memory
+@@@ transferring word [96-99] from the memory to the cache
+@@@ transferring word [99-99] from the cache to the processor
+@@@ transferring word [37-37] from the cache to the processor
+DEBUG: 12648451
+@@@ transferring word [32-35] from the cache to nowhere
+@@@ transferring word [0-3] from the memory to the cache
+@@@ transferring word [3-3] from the processor to the cache
+@@@ transferring word [38-38] from the cache to the processor
+DEBUG: 25165824

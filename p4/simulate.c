@@ -108,28 +108,13 @@ void printAction(int address, int size, enum actionType type) {
     }
 }
 
-/*
-cacheToProcessor, processorToCache, memoryToCache, cacheToMemory, cacheToNowhere
-
-setStruct
-	int dirty[MAXBLOCKSIZE];
-	int valid[MAXBLOCKSIZE];
-	int tag[MAXBLOCKSIZE];
-	int data[MAXBLOCKSIZE];
-	int LRUbits[MAXBLOCKSIZE];
-	int LRU;
-
-cacheStruct {
-	setType sets[MAXBLOCKS];
-	int SIZE;
-	int blockSize;
-    int numSets;
-    int blocksPerSet; */
-
 void adjustLRU(cacheType *cache, int set, int i) {
 	cache->sets[set].LRUbits[i] = 0;
 	int j;
-	for (j=0; j<cache->blockSize; j++) cache->sets[set].LRUbits[j]++;
+	for (j=0; j<cache->blocksPerSet; j++) {
+		if (cache->sets[set].valid[j]==1 && i!=j)
+			cache->sets[set].LRUbits[j]++;
+	}
 }
 
 /**
@@ -141,10 +126,6 @@ int load(cacheType *cache, int addr, stateType *state) {
 	int tag = addr / (cache->blockSize * cache->numSets);
 	int block = ((int)(addr/cache->blockSize))*cache->blockSize;
 	int offset = addr % cache->blockSize;
-
-	/*
-	printf("DEBUG - set: %d tag: %d block: %d offset: %d\n", set, tag, block, offset);
-	*/
 
 	int i;
 	for (i=0; i < cache->blocksPerSet; i++) {
@@ -183,11 +164,10 @@ int load(cacheType *cache, int addr, stateType *state) {
 	if (cache->sets[set].dirty[cache->sets[set].LRU]==1) {
 		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToMemory);
 		for (i=0; i < cache->blockSize; i++)
-			state->mem[block+i] = cache->sets[set].data[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i];
+			state->mem[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i] = cache->sets[set].data[cache->sets[set].LRU*cache->blockSize+i];
 		cache->sets[set].dirty[cache->sets[set].LRU] = 0;
-	} else {
+	} else
 		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToNowhere);
-	}
 
 	/* Conflict miss */
 	cache->sets[set].valid[cache->sets[set].LRU] = 1;
@@ -247,17 +227,14 @@ void store(cacheType *cache, int addr, int data, stateType *state) {
 		}
 	}
 
-	printf("DEBUG - store LRU: %d\n",cache->sets[set].LRU);
-
 	/* Write back */
 	if (cache->sets[set].dirty[cache->sets[set].LRU]==1) {
 		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToMemory);
 		for (i=0; i < cache->blockSize; i++)
-			state->mem[block+i] = cache->sets[set].data[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i];
+			state->mem[cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets + i] = cache->sets[set].data[cache->sets[set].LRU*cache->blockSize+i];
 		cache->sets[set].dirty[cache->sets[set].LRU] = 0;
-	} else {
+	} else
 		printAction(cache->blockSize*set+cache->sets[set].tag[cache->sets[set].LRU]*cache->blockSize*cache->numSets, cache->blockSize, cacheToNowhere);
-	}
 
 	/* Conflict miss */
 	cache->sets[set].valid[cache->sets[set].LRU] = 1;
